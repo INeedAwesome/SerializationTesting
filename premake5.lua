@@ -1,8 +1,8 @@
-workspace "TemplateApp"
+workspace "Series"
    architecture "x64"
    configurations { "Debug", "Release", "Dist" }
-   startproject "TemplateApp"
+   startproject "Series"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-include "TemplateApp"
+include "Series"

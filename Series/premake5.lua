@@ -1,12 +1,12 @@
-project "TemplateApp"
+project "Series"
    kind "ConsoleApp"
    language "C++"
    cppdialect "C++17"
    targetdir "bin/%{cfg.buildcfg}"
    staticruntime "off"
 
-   pchheader "stdafx.h"
-   pchsource "../%{prj.name}/src/stdafx.cpp"
+   pchheader "stdsrs.h"
+   pchsource "../%{prj.name}/src/stdsrs.cpp"
 
    files { "src/**.h", "src/**.cpp" }
 
