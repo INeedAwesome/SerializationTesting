@@ -1,0 +1,7 @@
+WindowWidth:720 
+WindowHeight:1280 
+WindowTitle:'Hello Window' 
+IsFullscreen:0 
+MSAA:2 
+VSync:0 
+Language:'en' 

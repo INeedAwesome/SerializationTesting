@@ -12,6 +12,7 @@ project "Series"
 
    includedirs
    {
+      "vendor\\include"
    }
 
    targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
