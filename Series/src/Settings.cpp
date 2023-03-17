@@ -8,53 +8,61 @@ namespace Options {
 	Options::Options(const std::string& filepath)
 	{
 		m_Filepath = filepath;
-		std::cout << sizeof(m_UserPrefrerences.Language) << std::endl;
-		this->OpenFile(m_Filepath);
+
+		if (this->OpenFile() > 0)
+		{
+			this->CreateFile();
+			if (this->OpenFile() > 0) 
+			{
+				std::cout << "Can not create file with that name!" << std::endl;
+			}
+		}
 		this->ReadFile();
 		this->ValidateOptions();
-
 	}
 
 	Options::~Options()
 	{
 		WriteFile();
-		fclose(m_fileRefToPath);
+		fclose(m_FileRef);
 	}
 
-	void Options::OpenFile(const std::string& filepath)
+	uint32_t Options::OpenFile()
 	{
-		m_fileRefToPath = nullptr;
+		m_FileRef = nullptr;
 
-		fopen_s(&m_fileRefToPath, m_Filepath.c_str(), "r+");
+		fopen_s(&m_FileRef, m_Filepath.c_str(), "r+");
 
-		if (m_fileRefToPath == nullptr)
+		if (m_FileRef == nullptr)
 		{
-			std::cout << "File: " << m_Filepath << " was not found!" << std::endl;
+			return 1;
 		}
+		return 0;
 	}
 
 	void Options::ReadFile()
 	{
-		fseek(m_fileRefToPath, 0, SEEK_SET);
-		fscanf_s(m_fileRefToPath, WINSET_FORMAT_IN,
-			&m_WindowSettings.WindowWidth, &m_WindowSettings.WindowHeight, &m_WindowSettings.WindowTitle, 64, &m_WindowSettings.IsFullscreen,
-			&m_UserPrefrerences.MSAA, &m_UserPrefrerences.VSync, &m_UserPrefrerences.Language, 2
+		
+		fseek(m_FileRef, 0, SEEK_SET);
+		fscanf_s(m_FileRef, WINSET_FORMAT_IN,
+			&m_WindowSettings.WindowWidth, &m_WindowSettings.WindowHeight, &m_WindowSettings.IsFullscreen,
+			&m_UserPrefererences.MSAA, &m_UserPrefererences.VSync, &m_UserPrefererences.Language, 2
 		);
-	}
-
-	std::string Options::ReadValue(const std::string& name)
-	{
-		return "";
-
 	}
 
 	void Options::WriteFile()
 	{
-		fseek(m_fileRefToPath, 0, SEEK_SET);
-		fprintf_s(m_fileRefToPath, WINSET_FORMAT_OUT,
-			m_WindowSettings.WindowWidth, m_WindowSettings.WindowHeight, m_WindowSettings.WindowTitle, m_WindowSettings.IsFullscreen,
-			m_UserPrefrerences.MSAA, m_UserPrefrerences.VSync, m_UserPrefrerences.Language
+		fseek(m_FileRef, 0, SEEK_SET);
+		fprintf_s(m_FileRef, WINSET_FORMAT_OUT,
+			m_WindowSettings.WindowWidth, m_WindowSettings.WindowHeight, m_WindowSettings.IsFullscreen,
+			m_UserPrefererences.MSAA, m_UserPrefererences.VSync, m_UserPrefererences.Language
 		);
+	}
+
+	void Options::CreateFile()
+	{
+		std::ofstream newFile(m_Filepath.c_str());
+		newFile.close();
 	}
 
 	void Options::ValidateOptions()
@@ -66,12 +74,12 @@ namespace Options {
 		if (m_WindowSettings.IsFullscreen > 1 || m_WindowSettings.IsFullscreen < 0)
 			m_WindowSettings.IsFullscreen = 0;
 		
-		if (m_UserPrefrerences.MSAA > 16 || m_UserPrefrerences.MSAA < 1)
-			m_UserPrefrerences.MSAA = 2;
-		if (m_UserPrefrerences.VSync > 1 || m_UserPrefrerences.VSync < 0)
-			m_UserPrefrerences.VSync = 1;
-		if (m_UserPrefrerences.Language != "en" || m_UserPrefrerences.Language != "sv")
-			m_UserPrefrerences.Language[0] = 'e'; m_UserPrefrerences.Language[1] = 'n';
+		if (m_UserPrefererences.MSAA > 16 || m_UserPrefererences.MSAA < 1)
+			m_UserPrefererences.MSAA = 2;
+		if (m_UserPrefererences.VSync > 1 || m_UserPrefererences.VSync < 0)
+			m_UserPrefererences.VSync = 1;
+		if (m_UserPrefererences.Language > SWEDISH || m_UserPrefererences.Language < ENGLISH)
+			m_UserPrefererences.Language = ENGLISH;
 		
 	}
 

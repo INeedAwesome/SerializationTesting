@@ -4,5 +4,6 @@
 #include <stdint.h>
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <memory>
 #include <vector>
