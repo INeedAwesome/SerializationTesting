@@ -1,8 +1,6 @@
 #include "stdsrs.h"
 #include "Settings.h"
 
-#include "glm/glm.hpp"
-
 namespace Options {
 
 	Options::Options(const std::string& filepath)
